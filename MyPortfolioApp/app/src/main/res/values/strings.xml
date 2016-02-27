@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Portfolio App</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="button_text">SPOTIFY STREAMER</string>
+    <string name="button1_text">SCORES APP</string>
+    <string name="button2_text">LIBRARY APP</string>
+    <string name="button3_text">BUILD IT BIGGER</string>
+    <string name="button4_text">BACON READER</string>
+    <string name="button5_text">CAPSTONE: MY OWN APP</string>
+</resources>
