@@ -1,6 +1,5 @@
 package com.example.nilanjandaw.movies;
 
-import net.simonvt.schematic.annotation.AutoIncrement;
 import net.simonvt.schematic.annotation.DataType;
 import net.simonvt.schematic.annotation.NotNull;
 import net.simonvt.schematic.annotation.PrimaryKey;
@@ -16,7 +15,6 @@ public interface Columns {
 
     @DataType(INTEGER)
     @PrimaryKey
-    @AutoIncrement
     String _ID = "movie_id";
     @DataType(TEXT)
     @NotNull

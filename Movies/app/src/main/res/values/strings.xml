@@ -15,4 +15,5 @@
     <string name="favourite">Add as Favorite</string>
     <string name="action_sort_favourite">Sort By Favourite</string>
     <string name="review_header">Review</string>
+    <string name="trailer_header">Trailers</string>
 </resources>

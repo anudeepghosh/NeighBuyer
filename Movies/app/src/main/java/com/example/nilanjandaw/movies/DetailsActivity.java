@@ -2,18 +2,22 @@ package com.example.nilanjandaw.movies;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,8 +26,17 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,6 +63,8 @@ public class DetailsActivity extends Activity {
     RelativeLayout backgroundLayout;
     @Bind(R.id.favourite_layout)
     LinearLayout favouriteLayout;
+    @Bind(R.id.trailer_holder)
+    ListView trailerList;
     private boolean isFavourite = false;
 
     @Override
@@ -63,6 +78,18 @@ public class DetailsActivity extends Activity {
             // if the info bundle sent from the MainActivity is not null then the different visual
             // elements are set to their respective information
             final JSONObject movieInfo = setUpUI(info);
+            String trailerUrl = "http://api.themoviedb.org/3/movie/"
+                    + movieInfo.getString("id")
+                    + "/videos?api_key=" + MainActivity.apiKey;
+            /**
+             String reviewUrl = "http://api.themoviedb.org/3/movie/"
+             + movieInfo.getString("id")
+             + "/reviews?api_key=" + MainActivity.apiKey;
+             */
+            new TrailerFinder().execute(trailerUrl);
+             
+
+            //Favorite Button Click Listener
             favouriteLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,6 +112,7 @@ public class DetailsActivity extends Activity {
                             favouriteText.setText("Favourite");
 
                             ContentValues values = new ContentValues();
+                            values.put(Columns._ID, movieInfo.getString("id"));
                             values.put(Columns.POSTER_PATH, movieInfo.getString("poster_path"));
                             values.put(Columns.OVERVIEW, movieInfo.getString("overview"));
                             values.put(Columns.RELEASE_DATE, movieInfo.getString("release_date"));
@@ -122,11 +150,12 @@ public class DetailsActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(this, "Error in parsing Movie Info", Toast.LENGTH_LONG).show();
-            finish();
+            //finish();
         }
     }
 
     public JSONObject setUpUI(Bundle info) throws JSONException {
+
         if (info != null) {
             String movieInfoString = info.getString("movie_details");
             final JSONObject movieInfo = new JSONObject(movieInfoString);
@@ -208,5 +237,82 @@ public class DetailsActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class TrailerFinder extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            InputStream inputStream = null;
+            HttpURLConnection urlConnection = null;
+            String httpMovieURL = params[0];
+            String result = null;
+            Log.d("URL", httpMovieURL);
+            try {
+                URL url = new URL(httpMovieURL);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                urlConnection.setRequestMethod("GET");
+                int statusCode = urlConnection.getResponseCode();
+                if (statusCode == 200) {
+                    Log.d("Request", "Successful");
+                    result = readResponse(inputStream);
+                } else {
+                    Log.d("Request", "Failed");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (inputStream != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            Log.d("URL", httpMovieURL);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            JSONObject jsonResponse = null;
+
+            try {
+                jsonResponse = new JSONObject(result);
+                final JSONArray jsonResponseArray = jsonResponse.optJSONArray("results");
+                Log.d("Response", jsonResponseArray.getString(0));
+                trailerList.setAdapter(new TrailerAdapter(getBaseContext(), jsonResponseArray));
+                trailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        try {
+                            String youtubeUrl = "http://www.youtube.com/watch?v=" +
+                                    jsonResponseArray.getJSONObject(position).getString("key");
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        private String readResponse(InputStream inputStream) {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            String line, result = "";
+            try {
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
     }
 }

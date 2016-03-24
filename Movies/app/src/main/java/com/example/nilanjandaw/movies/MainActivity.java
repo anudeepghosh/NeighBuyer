@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
                     Log.d("Cursor", cursor.getString(cursor.getColumnIndex(Columns.TITLE)));
 
                     JSONObject favoriteMovie = new JSONObject();
+                    favoriteMovie.put("id", cursor.getString(cursor.getColumnIndex(Columns._ID)));
                     favoriteMovie.put("original_title", cursor.getString(cursor.getColumnIndex(Columns.TITLE)));
                     favoriteMovie.put("poster_path", cursor.getString(cursor.getColumnIndex(Columns.POSTER_PATH)));
                     favoriteMovie.put("overview", cursor.getString(cursor.getColumnIndex(Columns.OVERVIEW)));
@@ -165,6 +166,7 @@ public class MainActivity extends Activity {
                 } else {
                     Log.d("Request", "Failed");
                 }
+                return statusCode;
 
             } catch (IOException e) {
                 e.printStackTrace();
