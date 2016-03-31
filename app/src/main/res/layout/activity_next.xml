@@ -57,32 +57,98 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" >
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageView"
+                    android:src="@drawable/Airline"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="A"
+                    android:id="@+id/textView3" />
+
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"></TableRow>
+                android:layout_gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/Calculator"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="B"
+                    android:id="@+id/textView4" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" >
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageView3"
+                    android:src="@drawable/Cloud"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="C"
+                    android:id="@+id/textView5" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" >
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageView4"
+                    android:src="@drawable/Contact"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="D"
+                    android:id="@+id/textView6" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal" >
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal" />
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:id="@+id/imageView5"
+                    android:src="@drawable/Calculator"/>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="E"
+                    android:id="@+id/textView7" />
+            </TableRow>
         </LinearLayout>
 </ScrollView>
     </LinearLayout>
