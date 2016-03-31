@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Search"
-                android:id="@+id/button"
+                android:id="@+id/search"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true" />
         </RelativeLayout>
@@ -63,7 +63,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView"
-                    android:src="@drawable/Airline"/>
+                    android:src="@drawable/airline"/>
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -83,7 +83,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView2"
-                    android:src="@drawable/Calculator"/>
+                    android:src="@drawable/calculator"/>
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -102,7 +102,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView3"
-                    android:src="@drawable/Cloud"/>
+                    android:src="@drawable/cloud"/>
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -121,7 +121,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView4"
-                    android:src="@drawable/Contact"/>
+                    android:src="@drawable/contact"/>
 
                 <TextView
                     android:layout_width="fill_parent"
@@ -140,7 +140,7 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView5"
-                    android:src="@drawable/Calculator"/>
+                    android:src="@drawable/calculator"/>
 
                 <TextView
                     android:layout_width="fill_parent"
