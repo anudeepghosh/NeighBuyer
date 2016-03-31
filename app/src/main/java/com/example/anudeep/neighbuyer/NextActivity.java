@@ -8,22 +8,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NextActivity extends AppCompatActivity {
-    Button search = (Button) findViewById(R.id.search);
-    ImageView im = (ImageView) findViewById(R.id.imageView);
-    ImageView im2 = (ImageView) findViewById(R.id.imageView2);
-    ImageView im3 = (ImageView) findViewById(R.id.imageView3);
-    ImageView im4 = (ImageView) findViewById(R.id.imageView4);
-    ImageView im5 = (ImageView) findViewById(R.id.imageView5);
-    TextView tv3 = (TextView) findViewById(R.id.textView3);
-    TextView tv4 = (TextView) findViewById(R.id.textView4);
-    TextView tv5 = (TextView) findViewById(R.id.textView5);
-    TextView tv6 = (TextView) findViewById(R.id.textView6);
-    TextView tv7 = (TextView) findViewById(R.id.textView7);
+    Button search;
+    ImageView im,im2,im3,im4,im5;
+    TextView tv3,tv4,tv5,tv6,tv7;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
+        search = (Button) findViewById(R.id.search);
+        im = (ImageView) findViewById(R.id.imageView);
+        im2 = (ImageView) findViewById(R.id.imageView2);
+        im3 = (ImageView) findViewById(R.id.imageView3);
+        im4 = (ImageView) findViewById(R.id.imageView4);
+        im5 = (ImageView) findViewById(R.id.imageView5);
+        tv3 = (TextView) findViewById(R.id.textView3);
+        tv4 = (TextView) findViewById(R.id.textView4);
+        tv5 = (TextView) findViewById(R.id.textView5);
+        tv6 = (TextView) findViewById(R.id.textView6);
+        tv7 = (TextView) findViewById(R.id.textView7);
         im.setVisibility(View.INVISIBLE);
         im2.setVisibility(View.INVISIBLE);
         im3.setVisibility(View.INVISIBLE);
