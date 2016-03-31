@@ -1,5 +1,6 @@
 package com.example.anudeep.neighbuyer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -22,6 +24,7 @@ String city="New Delhi";
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Spinner cityChooser = (Spinner) findViewById(R.id.city);
+        Button next =(Button) findViewById(R.id.next);
         ImageButton location = (ImageButton) findViewById(R.id.location);
         EditText fstName = (EditText)findViewById(R.id.fstName);
         EditText lstName = (EditText)findViewById(R.id.lstName);
@@ -29,11 +32,12 @@ String city="New Delhi";
         EditText phone = (EditText)findViewById(R.id.phone);
         //EditText fName = (EditText)findViewById(R.id.fstName);
         setSupportActionBar(toolbar);
-        Data data = new Data();
+        final Data data = new Data();
         cityChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView adapter, View view, int position, long id) {
                 city = adapter.getItemAtPosition(position).toString();
+                data.setCity(city);
             }
 
             @Override
@@ -41,7 +45,20 @@ String city="New Delhi";
 
             }
         });
-        data.setCity(city);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, NextActivity.class);
+                startActivity(intent);
+            }
+        });
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
