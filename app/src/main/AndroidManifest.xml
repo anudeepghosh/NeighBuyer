@@ -40,7 +40,15 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".NextActivity"></activity>
+
+        <activity
+            android:name=".NextActivity">
+            <intent-filter>
+                <action android:name="nextActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
