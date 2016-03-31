@@ -136,11 +136,12 @@
                         android:weightSum="1">
 
                         <Spinner
-                            android:layout_width="266dp"
+                            android:layout_width="270dp"
                             android:layout_height="60dp"
                             android:id="@+id/city"
-                            android:layout_weight="0.18"
                             android:spinnerMode="dropdown"
+                            android:paddingRight="10dp"
+                            android:paddingLeft="10dp"
                             android:elevation="5dp"
                             android:prompt="@array/cities"/>
 
@@ -149,7 +150,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/location"
-                            android:layout_marginLeft="10dp"
                             android:background="@drawable/roundedbutton"
                             android:src="@drawable/location"
                             android:layout_gravity="right|center_vertical" />

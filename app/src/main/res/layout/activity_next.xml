@@ -63,7 +63,8 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:id="@+id/imageView"
-                    android:src="@drawable/airline"/>
+                    android:src="@drawable/airline"
+                    />
 
                 <TextView
                     android:layout_width="fill_parent"
