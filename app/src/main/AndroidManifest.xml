@@ -42,7 +42,8 @@
             android:label="@string/title_activity_maps" />
 
         <activity
-            android:name=".NextActivity">
+            android:name=".NextActivity"
+            android:label="@string/title_activity_next">
             <intent-filter>
                 <action android:name="nextActivity" />
 
