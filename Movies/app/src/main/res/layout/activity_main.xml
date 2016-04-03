@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <GridView
-        android:id="@+id/grid_movie"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left|top"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth" />
+    <fragment
+        android:id="@+id/fragment_list"
+        android:name="com.example.nilanjandaw.movies.MovieListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_movie_list" />
 </FrameLayout>

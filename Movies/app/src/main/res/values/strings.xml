@@ -16,4 +16,9 @@
     <string name="action_sort_favourite">Sort By Favourite</string>
     <string name="review_header">Review</string>
     <string name="trailer_header">Trailers</string>
+    <string name="author_name">Author Name</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">Main2Activity</string>
 </resources>
