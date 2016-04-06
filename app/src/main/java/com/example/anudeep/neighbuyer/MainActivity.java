@@ -15,9 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
-String city="New Delhi";
+    String city="New Delhi";
+    final Data data = new Data();
+    Double latLong[][] = {{22.36,28.37,13.08,18.55},{88.24,77.17,80.19,72.50}};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +37,15 @@ String city="New Delhi";
         EditText phone = (EditText)findViewById(R.id.phone);
         //EditText fName = (EditText)findViewById(R.id.fstName);
         setSupportActionBar(toolbar);
-        final Data data = new Data();
+
         cityChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView adapter, View view, int position, long id) {
                 city = adapter.getItemAtPosition(position).toString();
                 data.setCity(city);
+                data.setUserLatitude(latLong[0][position]);
+                data.setUserLongitude(latLong[1][position]);
+                Toast.makeText(getApplicationContext(), ""+data.getCity()+" "+data.getUserLatitude()+" "+data.getUserLongitude(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
