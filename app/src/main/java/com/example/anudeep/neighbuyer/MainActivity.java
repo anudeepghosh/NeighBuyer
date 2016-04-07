@@ -1,7 +1,9 @@
 package com.example.anudeep.neighbuyer;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +23,13 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String FName = "fNameKey";
+    public static final String LName = "lNameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+
+    SharedPreferences sharedpreferences;
     String city="New Delhi";
     int located = 0;
     final Data data = new Data();
@@ -32,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         Spinner cityChooser = (Spinner) findViewById(R.id.city);
         Button next =(Button) findViewById(R.id.next);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         ImageButton location = (ImageButton) findViewById(R.id.location);
         ImageButton reset = (ImageButton) findViewById(R.id.reset);
         final EditText fstName = (EditText)findViewById(R.id.fstName);
         final EditText lstName = (EditText)findViewById(R.id.lstName);
         final EditText email = (EditText)findViewById(R.id.email);
         final EditText phone = (EditText)findViewById(R.id.phone);
+
         setSupportActionBar(toolbar);
 
         cityChooser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -60,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 phone.setText("");
             }
         });
+
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +110,14 @@ public class MainActivity extends AppCompatActivity {
                     data.setLastName(String.valueOf(lstName));
                     data.setEmail(String.valueOf(email));
                     data.setPhone(String.valueOf(phone));
+
+                    SharedPreferences.Editor editor = sharedpreferences.edit(); //saving input data
+                    editor.putString(FName, String.valueOf(fstName));
+                    editor.putString(LName, String.valueOf(lstName));
+                    editor.putString(Phone, String.valueOf(phone));
+                    editor.putString(Email, String.valueOf(email));
+                    editor.commit();
+
                     Intent intent = new Intent(MainActivity.this, MapActivity.class);
                     intent.putExtra("City",city);
                     startActivityForResult(intent, 2);
