@@ -4,14 +4,14 @@ package com.example.anudeep.neighbuyer;
  * Created by Anudeep on 31-03-2016.
  */
 public class Data {
-    String firstName;
-    String lastName;
-    String ID;
-    String phone;
-    String email;
-    String city;
-    double userLatitude;
-    double userLongitude;
+    private String firstName=null;
+    private String lastName=null;
+    private String ID=null;
+    private String phone=null;
+    private String email=null;
+    private String city=null;
+    private double userLatitude=0;
+    private double userLongitude=0;
 
     public String getFirstName() {
         return firstName;
