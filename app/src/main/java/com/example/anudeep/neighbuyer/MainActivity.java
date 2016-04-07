@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity {
     String city="New Delhi";
+    int located = 0;
     final Data data = new Data();
     String latLong[][] = {{"","22.36","28.37","13.08","18.55"},{"","88.24","77.17","80.19","72.50"}};
     @Override
@@ -43,12 +44,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView adapter, View view, int position, long id) {
                 city = adapter.getItemAtPosition(position).toString();
-                data.setCity(city);
                 if (position != 0) {
+                    data.setCity(city);
                     data.setUserLatitude(Double.parseDouble(latLong[0][position]));
                     data.setUserLongitude(Double.parseDouble(latLong[1][position]));
+                    Toast.makeText(getApplicationContext(), "" + data.getCity() + " " + data.getUserLatitude() + " " + data.getUserLongitude(), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getApplicationContext(), "Select a city", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "" + data.getCity() + " " + data.getUserLatitude() + " " + data.getUserLongitude(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -69,10 +73,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(fstName!=null&&lstName!=null&&phone!=null&&email!=null) {
-                    Intent intent=new Intent(MainActivity.this, NextActivity.class);
-                    startActivity(intent);
-                }
-                else {
+                    if(located==1) {                                                                //to check if location is set or not
+                        Intent intent = new Intent(MainActivity.this, NextActivity.class);
+                        startActivity(intent);
+
+                    }else {
+                        Toast.makeText(getApplicationContext(),"Locate Yourself!",Toast.LENGTH_SHORT).show();
+                        fstName.requestFocus();
+                    }
+                }else {
                     Toast.makeText(getApplicationContext(),"Fill ID Details",Toast.LENGTH_SHORT).show();
                     fstName.requestFocus();
                 }
@@ -81,12 +90,23 @@ public class MainActivity extends AppCompatActivity {
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, MapActivity.class);
-                startActivityForResult(intent,2);
+                if(fstName!=null&&lstName!=null&&phone!=null&&email!=null) {
+                    data.setFirstName(String.valueOf(fstName));
+                    data.setLastName(String.valueOf(lstName));
+                    data.setEmail(String.valueOf(email));
+                    data.setPhone(String.valueOf(phone));
+                    Intent intent = new Intent(MainActivity.this, MapActivity.class);
+                    intent.putExtra("City",city);
+                    startActivityForResult(intent, 2);
+                }else {
+                    Toast.makeText(getApplicationContext(),"Fill ID Details",Toast.LENGTH_SHORT).show();
+                    fstName.requestFocus();
+                }
             }
         });
     }
     //Getting Map co-ordinates of current location
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent iData) {
         super.onActivityResult(requestCode, resultCode, iData);
@@ -97,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     Double usrLong = iData.getDoubleExtra("Longitude", 0.0);
                     data.setUserLatitude(usrLat);
                     data.setUserLongitude(usrLong);
+                    located=1;
                     Toast.makeText(getApplicationContext(),""+usrLat+" "+usrLong,Toast.LENGTH_SHORT).show();
                 }
                 break;
