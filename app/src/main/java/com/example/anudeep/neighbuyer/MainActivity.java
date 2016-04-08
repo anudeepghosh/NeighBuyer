@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.plus.model.people.Person;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -32,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     String city="New Delhi";
     int located = 0;
-    final Data data = new Data();
+    final static Data data = new Data();
     String latLong[][] = {{"","22.36","28.37","13.08","18.55"},{"","88.24","77.17","80.19","72.50"}};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView adapter, View view, int position, long id) {
                 city = adapter.getItemAtPosition(position).toString();
-                if (position != 0) {
+                if (position > 0) {
                     data.setCity(city);
                     data.setUserLatitude(Double.parseDouble(latLong[0][position]));
                     data.setUserLongitude(Double.parseDouble(latLong[1][position]));
@@ -91,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, NextActivity.class);
                         startActivity(intent);
 
+
                     }else {
                         Toast.makeText(getApplicationContext(),"Locate Yourself!",Toast.LENGTH_SHORT).show();
                         fstName.requestFocus();
@@ -117,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString(Phone, String.valueOf(phone));
                     editor.putString(Email, String.valueOf(email));
                     editor.commit();
-
+                    located = 1;
                     Intent intent = new Intent(MainActivity.this, MapActivity.class);
                     intent.putExtra("City",city);
                     startActivityForResult(intent, 2);
@@ -170,4 +185,79 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public static String CreateJson(){
+        InputStream inputStream = null;
+        String result = "";
+        try {
+
+            // 1. create HttpClient
+            //HttpClient httpclient = new DefaultHttpClient();
+
+            // 2. make POST request to the given URL
+            //HttpPost httpPost = new HttpPost(url);
+
+            String json = "";
+
+            // 3. build jsonObject
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.accumulate(FName, data.getFirstName());
+            jsonObject.accumulate(LName, data.getLastName());
+            jsonObject.accumulate(Phone, data.getPhone());
+            jsonObject.accumulate(Email, data.getEmail());
+            jsonObject.accumulate("City", data.getCity());
+            jsonObject.accumulate("ULatitude", data.getUserLatitude());
+            jsonObject.accumulate("ULongitude", data.getUserLongitude());
+            //jsonObject.accumulate("UID", data.getID()); //to be generated on server side
+
+            // 4. convert JSONObject to JSON to String
+            json = jsonObject.toString();
+
+            // ** Alternative way to convert Person object to JSON string usin Jackson Lib
+            // ObjectMapper mapper = new ObjectMapper();
+            // json = mapper.writeValueAsString(person);
+
+            // 5. set json to StringEntity
+            StringEntity se = new StringEntity(json);
+
+            // 6. set httpPost Entity
+            //httpPost.setEntity(se);
+
+            // 7. Set some headers to inform server about the type of the content
+            //httpPost.setHeader("Accept", "application/json");
+            //httpPost.setHeader("Content-type", "application/json");
+
+            // 8. Execute POST request to the given URL
+            //HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // 9. receive response as inputStream
+            //inputStream = httpResponse.getEntity().getContent();
+
+            // 10. convert inputstream to string
+            /*if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+                */
+            result=json;
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        // 11. return result
+        return result;
+    }
+
+    /**private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }*/
 }
