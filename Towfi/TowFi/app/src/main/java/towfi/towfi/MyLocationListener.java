@@ -35,7 +35,7 @@ public class MyLocationListener implements LocationListener{
         //Toast.makeText(context,Double.toString(latitude),Toast.LENGTH_LONG).show();
         //Toast.makeText(context,Double.toString(longitude),Toast.LENGTH_LONG).show();
         MapsActivity.mMap.clear();
-        if(Math.abs(MapsActivity.signalStrength)<80) {
+        if(Math.abs(MapsActivity.signalStrength)<70) {
             MapsActivity.mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Bad Signal"));
             MapsActivity.draw((int) Math.random() * 10, latitude, longitude, Color.RED);
         }

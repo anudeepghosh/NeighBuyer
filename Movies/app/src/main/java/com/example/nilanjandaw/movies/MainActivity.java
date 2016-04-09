@@ -7,13 +7,12 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.GridView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
 public class MainActivity extends FragmentActivity implements MovieListFragment.Callback {
 
-    GridView movieGrid;
     public static boolean isTwoPane = false;
     public static String DETAILS_TAG = "DETAILS";
 
@@ -75,7 +74,7 @@ public class MainActivity extends FragmentActivity implements MovieListFragment.
         Log.d("MainActivity", "two_pane");
         try {
             if (isTwoPane) {
-                DetailsFragment detailsFragment = null;
+                DetailsFragment detailsFragment;
                 Bundle bundle = new Bundle();
                 bundle.putString("movie_details", array.getJSONObject(position).toString());
                 bundle.putBoolean("is_favorite", cursor.getCount() > 0);

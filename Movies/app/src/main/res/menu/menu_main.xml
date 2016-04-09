@@ -1,19 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
         android:id="@+id/action_sort_popularity"
         android:orderInCategory="100"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_sort_popularity" />
     <item
         android:id="@+id/action_sort_rating"
         android:orderInCategory="101"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_sort_rating" />
     <item
         android:id="@+id/action_sort_favourite"
         android:orderInCategory="102"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/action_sort_favourite" />
 </menu>

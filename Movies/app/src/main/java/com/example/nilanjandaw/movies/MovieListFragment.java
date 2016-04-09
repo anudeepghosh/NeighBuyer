@@ -1,10 +1,7 @@
 package com.example.nilanjandaw.movies;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import retrofit2.Call;
 
 
 public class MovieListFragment extends Fragment {
@@ -197,6 +192,6 @@ public class MovieListFragment extends Fragment {
     }
 
     public interface Callback {
-        public void onItemSelected(JSONArray array, Cursor cursor, int position);
+        void onItemSelected(JSONArray array, Cursor cursor, int position);
     }
 }

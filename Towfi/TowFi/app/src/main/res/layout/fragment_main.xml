@@ -9,4 +9,21 @@
     <TextView android:id="@+id/section_label" android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CONNECT"
+        android:id="@+id/btn_connect"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DISCONNECT"
+        android:id="@+id/btn_disconnect"
+        android:layout_below="@+id/btn_connect"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp" />
+
 </RelativeLayout>

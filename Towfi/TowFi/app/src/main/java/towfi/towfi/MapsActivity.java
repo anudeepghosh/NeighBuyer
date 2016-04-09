@@ -67,7 +67,7 @@ public class MapsActivity extends FragmentActivity {
     }
 
     public static  void draw(int color,double latitude, double longitude,int x) {
-
+        Log.e("draw", "Called");
         //Color c=Color.parseColor((ColorOperations.hsvToRgb(100, 100, 57)))
         CircleOptions circleOptions = new CircleOptions()
                 .center(new LatLng(latitude, longitude))
@@ -109,13 +109,14 @@ public class MapsActivity extends FragmentActivity {
                     return null;
                 }
             });
-            if(Math.abs(MapsActivity.signalStrength)<80) {
+            if(Math.abs(MapsActivity.signalStrength)<60) {
+                Log.d("Display: ", Integer.toString(Math.abs(MapsActivity.signalStrength)));
                 MapsActivity.mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Bad Signal"));
-                MapsActivity.draw((int) Math.random() * 10, latitude, longitude, Color.RED);
+                //MapsActivity.draw((int) (Math.random() * 10), latitude, longitude, Color.RED);
             }
             else {
                 MapsActivity.mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("Good Signal"));
-                MapsActivity.draw((int) Math.random() * 10, latitude, longitude, Color.GREEN);
+                //MapsActivity.draw((int) (Math.random() * 10), latitude, longitude, Color.GREEN);
             }
         }
     }

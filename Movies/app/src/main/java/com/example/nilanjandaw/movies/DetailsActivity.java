@@ -1,16 +1,9 @@
 package com.example.nilanjandaw.movies;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.app.FragmentActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import retrofit2.Call;
 
 public class DetailsActivity extends FragmentActivity {
 
