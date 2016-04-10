@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,10 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.plus.model.people.Person;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -32,9 +31,14 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String LName = "lNameKey";
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
+    public static final String BASE_URL = "http://neighbuy1.mybluemix.net";
 
     SharedPreferences sharedpreferences;
     String city="New Delhi";
@@ -101,7 +106,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(fstName!=null&&lstName!=null&&phone!=null&&email!=null) {
-                    if(located==1) {                                                                //to check if location is set or not
+                    //to check if location is set or not
+                    if(located==1) {
+                        JSONObject data = createJson();
+                        // post data to server
+                        new PostData().execute(data);
                         Intent intent = new Intent(MainActivity.this, NextActivity.class);
                         startActivity(intent);
 
@@ -112,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else {
                     Toast.makeText(getApplicationContext(),"Fill ID Details",Toast.LENGTH_SHORT).show();
-                    fstName.requestFocus();
+                    if (fstName != null) {
+                        fstName.requestFocus();
+                    }
                 }
             }
         });
@@ -131,14 +142,16 @@ public class MainActivity extends AppCompatActivity {
                     editor.putString(LName, String.valueOf(lstName));
                     editor.putString(Phone, String.valueOf(phone));
                     editor.putString(Email, String.valueOf(email));
-                    editor.commit();
+                    editor.apply();
                     located = 1;
                     Intent intent = new Intent(MainActivity.this, MapActivity.class);
                     intent.putExtra("City",city);
                     startActivityForResult(intent, 2);
                 }else {
                     Toast.makeText(getApplicationContext(),"Fill ID Details",Toast.LENGTH_SHORT).show();
-                    fstName.requestFocus();
+                    if (fstName != null) {
+                        fstName.requestFocus();
+                    }
                 }
             }
         });
@@ -186,21 +199,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static String CreateJson(){
+    public JSONObject createJson() {
         InputStream inputStream = null;
         String result = "";
+        JSONObject jsonObject = null;
         try {
-
-            // 1. create HttpClient
-            //HttpClient httpclient = new DefaultHttpClient();
-
-            // 2. make POST request to the given URL
-            //HttpPost httpPost = new HttpPost(url);
-
             String json = "";
 
             // 3. build jsonObject
-            JSONObject jsonObject = new JSONObject();
+            jsonObject = new JSONObject();
             jsonObject.accumulate(FName, data.getFirstName());
             jsonObject.accumulate(LName, data.getLastName());
             jsonObject.accumulate(Phone, data.getPhone());
@@ -210,54 +217,59 @@ public class MainActivity extends AppCompatActivity {
             jsonObject.accumulate("ULongitude", data.getUserLongitude());
             //jsonObject.accumulate("UID", data.getID()); //to be generated on server side
 
-            // 4. convert JSONObject to JSON to String
-            json = jsonObject.toString();
-
-            // ** Alternative way to convert Person object to JSON string usin Jackson Lib
-            // ObjectMapper mapper = new ObjectMapper();
-            // json = mapper.writeValueAsString(person);
-
-            // 5. set json to StringEntity
-            StringEntity se = new StringEntity(json);
-
-            // 6. set httpPost Entity
-            //httpPost.setEntity(se);
-
-            // 7. Set some headers to inform server about the type of the content
-            //httpPost.setHeader("Accept", "application/json");
-            //httpPost.setHeader("Content-type", "application/json");
-
-            // 8. Execute POST request to the given URL
-            //HttpResponse httpResponse = httpclient.execute(httpPost);
-
-            // 9. receive response as inputStream
-            //inputStream = httpResponse.getEntity().getContent();
-
-            // 10. convert inputstream to string
-            /*if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!";
-                */
-            result=json;
-
         } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
+            e.printStackTrace();
         }
 
         // 11. return result
-        return result;
+        return jsonObject;
     }
 
-    /**private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
+    //Async Task to ping server with new iser data
+    class PostData extends AsyncTask<JSONObject, Void, String> {
 
-        inputStream.close();
-        return result;
+        @Override
+        protected String doInBackground(JSONObject... params) {
+            HttpURLConnection urlConnection = null;
+            try {
+                URL url  = new URL(BASE_URL + "/newuser/");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setRequestProperty("Accept", "application/json");
 
-    }*/
+                Writer writer = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream(), "UTF-8"));
+                writer.write(String.valueOf(params[0]));
+                writer.close();
+                InputStream inputStream = urlConnection.getInputStream();
+
+                StringBuilder buffer = new StringBuilder();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String inputLine;
+                while ((inputLine = reader.readLine()) != null)
+                    buffer.append(inputLine).append("\n");
+                if (buffer.length() == 0) {
+                    // Stream was empty. No point in parsing.
+                    return null;
+                }
+                return buffer.toString();
+
+            } catch (java.io.IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d("Server Response", s);
+        }
+    }
 }
